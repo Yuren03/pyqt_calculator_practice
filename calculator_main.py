@@ -1,5 +1,6 @@
 import sys
 from PyQt5.QtWidgets import *
+from math import *
 
 class Main(QDialog):
     def __init__(self):
@@ -45,14 +46,20 @@ class Main(QDialog):
         button_remain = QPushButton("%")
         button_reverse = QPushButton("1/x")
         button_square = QPushButton("x^2")
-        button_sqroot = QPushButton("X^(1/2)")
+        button_sqrt = QPushButton("X^(1/2)")
+
+        ##단항 연산 버튼을 클릭했을 때, 수식창에 추가될 수 있도록 시그널 설정
+        button_remain.clicked.connect(lambda state, operation = "%": self.button_operation_clicked(operation))
+        button_reverse.clicked.connect(lambda state, operation = "re": self.button_single_op_clicked(operation))
+        button_square.clicked.connect(lambda state, operation = "sq": self.button_single_op_clicked(operation))
+        button_sqrt.clicked.connect(lambda state, operation = "sqrt": self.button_single_op_clicked(operation))
 
     
         ##단항 연산 버튼을 레이아웃에 추가
         layout_op.addWidget(button_remain, 0, 0)
         layout_op.addWidget(button_reverse, 1, 0)
         layout_op.addWidget(button_square, 1, 1)
-        layout_op.addWidget(button_sqroot, 1, 2)
+        layout_op.addWidget(button_sqrt, 1, 2)
 
 
         ### =, c, ce, backspace 버튼 생성
@@ -115,6 +122,12 @@ class Main(QDialog):
         self.equation += "e" #연산자 입력을 표시
         self.numeric = ""
 
+    def button_single_op_clicked(self, operation):
+        self.operation.append(operation)
+        solution = self.calc_op1()
+        self.numeric = solution
+        self.solution.setText(str(solution))
+
     def button_equal_clicked(self):
         solution = self.calc()
         self.solution.setText(str(solution))
@@ -163,7 +176,17 @@ class Main(QDialog):
             solution = x % y
 
         return solution
-
+        
+    def calc_op1(self):
+        op = self.operation.pop()
+        if op == "re":
+            solution = 1/float(self.numeric)
+        elif op == "sq":
+            solution = (float(self.numeric)) * (float(self.numeric))
+        elif op == "sqrt":   
+            solution = sqrt(float(self.numeric))
+            
+        return solution
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
