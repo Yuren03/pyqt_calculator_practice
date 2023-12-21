@@ -5,8 +5,10 @@ class Main(QDialog):
     def __init__(self):
         super().__init__()
         self.init_ui()
-        self.equation = ""     #계산식을 저장할 전역변수 생성
-
+        self.equation = ""     #계산식을 저장할 변수 생성
+        self.numeric = ""      #두 자리 수 이상을 표시하기 위해 변수 생성
+        self.operation =[]    #연산자 저장
+    
     def init_ui(self):
         main_layout = QVBoxLayout()
 
@@ -45,6 +47,7 @@ class Main(QDialog):
         button_square = QPushButton("x^2")
         button_sqroot = QPushButton("X^(1/2)")
 
+    
         ##단항 연산 버튼을 레이아웃에 추가
         layout_op.addWidget(button_remain, 0, 0)
         layout_op.addWidget(button_reverse, 1, 0)
@@ -103,23 +106,64 @@ class Main(QDialog):
     ### functions ###
     #################
     def number_button_clicked(self, num):
+        self.numeric += str(num)
         self.equation += str(num)
-        self.solution.setText(str(num))
+        self.solution.setText(self.numeric)
 
     def button_operation_clicked(self, operation):
-        self.equation += operation
+        self.operation.append(operation)
+        self.equation += "e" #연산자 입력을 표시
+        self.numeric = ""
 
     def button_equal_clicked(self):
-        solution = eval(self.equation)
+        solution = self.calc()
         self.solution.setText(str(solution))
+        self.numeric =""
 
     def button_clear_clicked(self):
         self.equation = ""
+        self.numeric = ""
         self.solution.setText("")
 
     def button_backspace_clicked(self):
         self.equation = self.equation[:-1]
-        self.solution.setText("0")
+        self.numeric = self.numeric[:-1]
+        self.solution.setText(self.numeric)
+
+    def calc(self):
+        solution = 0
+        self.numeric = ""
+        for i in self.equation:
+            if i == "e":      #연산자를 만난 경우
+                self.equation = self.equation[1:]
+                x = float(self.numeric)
+                self.calc()
+                y = float(self.numeric)
+                solution = self.calc_op(x, y)
+                break
+                
+            else:
+                self.equation = self.equation[1:]
+                self.numeric += i
+            
+        return solution
+        
+    def calc_op(self, x, y):
+        op = self.operation.pop()
+        #사칙연산
+        if op == "+":
+            solution = x + y
+        elif op == "-":
+            solution = x - y
+        elif op == "*":
+            solution = x*y
+        elif op == "/":
+            solution = x/y
+        elif op == "%":
+            solution = x % y
+
+        return solution
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
