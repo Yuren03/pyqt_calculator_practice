@@ -5,7 +5,7 @@ class Main(QDialog):
     def __init__(self):
         super().__init__()
         self.init_ui()
-        self.equation = ""
+        self.equation = ""     #계산식을 저장할 전역변수 생성
 
     def init_ui(self):
         main_layout = QVBoxLayout()
@@ -14,7 +14,7 @@ class Main(QDialog):
         layout_operation = QHBoxLayout()
         layout_clear_equal = QHBoxLayout()
         layout_number = QGridLayout()
-        layout_solution = QGridLayout()
+        layout_solution = QGridLayout()  #grid로 변경, 변수명 변경
 
         ### 수식 입력과 답 출력을 위한 LineEdit 위젯 생성
         label_solution = QLabel("Solution: ")
