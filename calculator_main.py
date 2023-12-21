@@ -14,14 +14,14 @@ class Main(QDialog):
         layout_operation = QHBoxLayout()
         layout_clear_equal = QHBoxLayout()
         layout_number = QGridLayout()
-        layout_solution = QFormLayout()
+        layout_solution = QGridLayout()
 
         ### 수식 입력과 답 출력을 위한 LineEdit 위젯 생성
         label_solution = QLabel("Solution: ")
         self.solution = QLineEdit("")
 
         ### layout_equation_solution 레이아웃에 답 위젯을 추가
-        layout_solution.addRow(label_solution, self.solution)
+        layout_solution.addWidget(self.solution, 0, 0)
 
         ### 사칙연상 버튼 생성
         button_plus = QPushButton("+")
