@@ -39,18 +39,34 @@ class Main(QDialog):
         layout_number.addWidget(button_product, 0, 3)
         layout_op.addWidget(button_division, 1,3)
 
-        ### =, clear, backspace 버튼 생성
+        ##단항 연산 버튼 생성
+        button_remain = QPushButton("%")
+        button_reverse = QPushButton("1/x")
+        button_square = QPushButton("x^2")
+        button_sqroot = QPushButton("X^(1/2)")
+
+        ##단항 연산 버튼을 레이아웃에 추가
+        layout_op.addWidget(button_remain, 0, 0)
+        layout_op.addWidget(button_reverse, 1, 0)
+        layout_op.addWidget(button_square, 1, 1)
+        layout_op.addWidget(button_sqroot, 1, 2)
+
+
+        ### =, c, ce, backspace 버튼 생성
         button_equal = QPushButton("=")
         button_c = QPushButton("C")
+        button_ce = QPushButton("CE")
         button_backspace = QPushButton("Backspace")
 
-        ### =, clear, backspace 버튼 클릭 시 시그널 설정
+        ### =, c, ce backspace 버튼 클릭 시 시그널 설정
         button_equal.clicked.connect(self.button_equal_clicked)
         button_c.clicked.connect(self.button_clear_clicked)
+        button_ce.clicked.connect(self.button_clear_clicked)
         button_backspace.clicked.connect(self.button_backspace_clicked)
 
         ### =, clear, backspace 버튼을 layout_clear_equal 레이아웃에 추가
         layout_op.addWidget(button_c, 0, 2)
+        layout_op.addWidget(button_ce, 0, 1)
         layout_op.addWidget(button_backspace, 0, 3)
         layout_number.addWidget(button_equal, 3, 3)
 
