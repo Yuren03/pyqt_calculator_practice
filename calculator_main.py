@@ -5,6 +5,7 @@ class Main(QDialog):
     def __init__(self):
         super().__init__()
         self.init_ui()
+        self.equation = ""
 
     def init_ui(self):
         main_layout = QVBoxLayout()
@@ -13,17 +14,14 @@ class Main(QDialog):
         layout_operation = QHBoxLayout()
         layout_clear_equal = QHBoxLayout()
         layout_number = QGridLayout()
-        layout_equation_solution = QFormLayout()
+        layout_solution = QFormLayout()
 
         ### 수식 입력과 답 출력을 위한 LineEdit 위젯 생성
-        label_equation = QLabel("Equation: ")
         label_solution = QLabel("Solution: ")
-        self.equation = QLineEdit("")
         self.solution = QLineEdit("")
 
-        ### layout_equation_solution 레이아웃에 수식, 답 위젯을 추가
-        layout_equation_solution.addRow(label_equation, self.equation)
-        layout_equation_solution.addRow(label_solution, self.solution)
+        ### layout_equation_solution 레이아웃에 답 위젯을 추가
+        layout_solution.addRow(label_solution, self.solution)
 
         ### 사칙연상 버튼 생성
         button_plus = QPushButton("+")
@@ -81,7 +79,7 @@ class Main(QDialog):
         layout_number.addWidget(button_double_zero, 3, 0)
 
         ### 각 레이아웃을 main_layout 레이아웃에 추가
-        main_layout.addLayout(layout_equation_solution)
+        main_layout.addLayout(layout_solution)
         main_layout.addLayout(layout_operation)
         main_layout.addLayout(layout_clear_equal)
         main_layout.addLayout(layout_number)
@@ -93,28 +91,23 @@ class Main(QDialog):
     ### functions ###
     #################
     def number_button_clicked(self, num):
-        equation = self.equation.text()
-        equation += str(num)
-        self.equation.setText(equation)
+        self.equation += str(num)
+        self.solution.setText(str(num))
 
     def button_operation_clicked(self, operation):
-        equation = self.equation.text()
-        equation += operation
-        self.equation.setText(equation)
+        self.equation += operation
 
     def button_equal_clicked(self):
-        equation = self.equation.text()
-        solution = eval(equation)
+        solution = eval(self.equation)
         self.solution.setText(str(solution))
 
     def button_clear_clicked(self):
-        self.equation.setText("")
+        self.equation = ""
         self.solution.setText("")
 
     def button_backspace_clicked(self):
-        equation = self.equation.text()
-        equation = equation[:-1]
-        self.equation.setText(equation)
+        self.equation = self.equation[:-1]
+        self.solution.setText("0")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
